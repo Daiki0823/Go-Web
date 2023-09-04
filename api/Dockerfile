@@ -1,4 +1,4 @@
-FROM golang:1.20
+FROM public.ecr.aws/docker/library/golang:1.20
 ARG STAGE
 ENV STAGE="prod"
 WORKDIR /app
