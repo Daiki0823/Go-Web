@@ -1,0 +1,16 @@
+database:
+  local:
+    username: "root"
+    password: "rootpassword"
+    dbname: "tododb"
+    reader_host: "localhost:3306"
+    writer_host: "localhost:3306"
+    params: "charset=utf8mb4&parseTime=True&loc=Local"
+
+  prod:
+    username: "rds_user"
+    password: "rds_user"
+    dbname: "tododb"
+    reader_host: "db-cluster.cluster-ro-cxyptoevbdd4.ap-northeast-1.rds.amazonaws.com:3306"
+    writer_host: "db-cluster.cluster-cxyptoevbdd4.ap-northeast-1.rds.amazonaws.com:3306"
+    params: "charset=utf8mb4&parseTime=True&loc=Local"
