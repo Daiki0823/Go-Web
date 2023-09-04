@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo API Frontend</title>
+</head>
+
+<body>
+
+    <h1>ToDo List</h1>
+
+    <!-- Section to display all todos -->
+    <h2>All ToDos</h2>
+    <button onclick="fetchAllTodos()">Fetch All Todos</button>
+    <ul id="allTodos"></ul>
+
+    <!-- Section to fetch a todo by ID -->
+    <h2>Fetch ToDo by ID</h2>
+    <input type="text" id="todoId" placeholder="Enter ToDo ID">
+    <button onclick="fetchTodoById()">Fetch ToDo</button>
+    <p id="singleTodo"></p>
+
+    <!-- Section to add a new todo -->
+    <h2>Add New ToDo</h2>
+    <input type="text" id="newTodo" placeholder="Enter new ToDo">
+    <button onclick="addTodo()">Add ToDo</button>
+
+    <script>
+        const API_URL = 'http://localhost:1323';  // Change this if your API is hosted somewhere else
+
+        function fetchAllTodos() {
+            fetch(`${API_URL}/todos`)
+                .then(response => response.json())
+                .then(data => {
+                    const todoList = document.getElementById('allTodos');
+                    todoList.innerHTML = '';
+                    data.forEach(todo => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = todo.Title;  // Assuming each todo has a 'title' field
+                        todoList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching todos:', error);
+                });
+        }
+
+        function fetchTodoById() {
+            const todoId = document.getElementById('todoId').value;
+            fetch(`${API_URL}/todo/${todoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const todoElement = document.getElementById('singleTodo');
+                    todoElement.textContent = data.Title;  // Assuming the todo has a 'title' field
+                })
+                .catch(error => {
+                    console.error('Error fetching todo:', error);
+                });
+        }
+
+        function addTodo() {
+            const newTodoValue = document.getElementById('newTodo').value;
+            fetch(`${API_URL}/todo`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: newTodoValue })  // Assuming the todo structure has a 'title' field
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Added todo:', data);
+                    fetchAllTodos();  // Refresh the todo list
+                })
+                .catch(error => {
+                    console.error('Error adding todo:', error);
+                });
+        }
+    </script>
+
+</body>
+
+</html>
