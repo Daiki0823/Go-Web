@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Ensure AWS CLI is available..."
+      - aws --version
+
+  build:
+    commands:
+      - echo "Building the front-end..."
+      # 必要なビルドコマンドをここに追加する（もし必要なら）
+      - echo "Uploading to S3..."
+      - aws s3 cp front/index.html s3://my-task-app/index.html
