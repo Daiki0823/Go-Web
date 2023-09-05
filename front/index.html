@@ -27,6 +27,10 @@
     <input type="text" id="newTodo" placeholder="Enter new ToDo">
     <button onclick="addTodo()">Add ToDo</button>
 
+    <h2>Delete ToDo by ID</h2>
+    <input type="text" id="deleteTodoId" placeholder="Enter ToDo ID to delete">
+    <button onclick="deleteTodo()">Delete ToDo</button>
+
     <script>
         let API_URL;
 
@@ -82,6 +86,23 @@
                 })
                 .catch(error => {
                     console.error('Error adding todo:', error);
+                });
+        }
+        function deleteTodo() {
+            const todoIdToDelete = document.getElementById('deleteTodoId').value;
+            fetch(`${API_URL}/todo/${todoIdToDelete}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Deleted todo with ID:', todoIdToDelete);
+                        fetchAllTodos();  // Refresh the todo list
+                    } else {
+                        console.error('Error deleting todo, status:', response.status);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting todo:', error);
                 });
         }
     </script>

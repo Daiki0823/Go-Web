@@ -29,6 +29,7 @@ func main() {
 	e.GET("/api/todos", handlers.GetAllToDos)
 	e.GET("/api/todo/:id", handlers.GetToDoByID)
 	e.POST("/api/todo", handlers.AddToDo)
+	e.DELETE("/api/todo/:id", handlers.DeleteToDo)
 
 	// Determine the port based on the STAGE environment variable
 	port := ":1323" // default to 1323

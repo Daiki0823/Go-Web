@@ -80,11 +80,11 @@ func GetAllToDos(c echo.Context) error {
 	var todos []models.ToDo
 	result := readDB.Find(&todos)
 	if result.Error != nil {
-		return c.String(http.StatusInternalServerError, "Internal server error")
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Internal server error"})
 	}
 
 	if len(todos) == 0 {
-		return c.String(http.StatusOK, "No record!!!")
+		return c.JSON(http.StatusOK, map[string]string{"message": "No record!!!"})
 	}
 
 	return c.JSON(http.StatusOK, todos)
@@ -116,4 +116,26 @@ func AddToDo(c echo.Context) error {
 
 	writeDB.Create(&newToDo)
 	return c.JSON(http.StatusCreated, newToDo)
+}
+
+// DeleteToDo handles DELETE request to delete a todo by ID
+func DeleteToDo(c echo.Context) error {
+	id := c.Param("id")
+	todoID, err := strconv.Atoi(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid todo ID"})
+	}
+
+	// Check if the todo exists before deleting
+	var todo models.ToDo
+	result := readDB.First(&todo, todoID)
+	if result.Error != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Todo not found"})
+	}
+
+	if err := writeDB.Delete(&todo).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to delete todo"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{"message": "Todo deleted successfully"})
 }
