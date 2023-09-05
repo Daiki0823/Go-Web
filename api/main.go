@@ -22,13 +22,13 @@ func main() {
 	}))
 
 	// health check
-	e.GET("/hello", func(c echo.Context) error {
+	e.GET("/api/ping", func(c echo.Context) error {
 		return c.String(http.StatusOK, "OK!")
 	})
 	// Routes
-	e.GET("/todos", handlers.GetAllToDos)
-	e.GET("/todo/:id", handlers.GetToDoByID)
-	e.POST("/todo", handlers.AddToDo)
+	e.GET("/api/todos", handlers.GetAllToDos)
+	e.GET("/api//todo/:id", handlers.GetToDoByID)
+	e.POST("/api//todo", handlers.AddToDo)
 
 	// Determine the port based on the STAGE environment variable
 	port := ":1323" // default to 1323

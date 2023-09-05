@@ -28,7 +28,13 @@
     <button onclick="addTodo()">Add ToDo</button>
 
     <script>
-        const API_URL = 'http://localhost:1323';  // Change this if your API is hosted somewhere else
+        let API_URL;
+
+        if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+            API_URL = 'http://localhost:1323/api';
+        } else {
+            API_URL = '/api';
+        }
 
         function fetchAllTodos() {
             fetch(`${API_URL}/todos`)
