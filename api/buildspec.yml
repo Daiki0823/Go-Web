@@ -17,3 +17,12 @@ phases:
     commands:
       - echo Pushing Docker image to ECR...
       - docker push $ECR_REGISTRY_URL/$ECR_REPOSITORY_NAME:$IMAGE_TAG
+
+
+  post_build:
+    commands:
+      - echo Updating ECS task definition...
+      - task_definition=$(aws ecs register-task-definition --family task-definition-family --container-definitions file://path-to-container-definitions.json)
+      - task_revision=$(echo $task_definition | jq '.taskDefinition.revision')
+      - echo Updating ECS service with new task definition...
+      - aws ecs update-service --cluster cluster-name --service service-name --task-definition task-definition-family:$task_revision
